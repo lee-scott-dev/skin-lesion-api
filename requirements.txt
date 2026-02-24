@@ -1,8 +1,10 @@
-fastapi
-uvicorn[standard]
-tensorflow-cpu
-pillow
-numpy
-python-multipart
-pytest
-httpx
+fastapi==0.133.0
+uvicorn[standard]==0.41.0
+tensorflow-cpu==2.20.0
+pillow==12.1.1
+numpy==2.2.6
+python-multipart==0.0.22
+
+# Testing
+pytest==9.0.2
+httpx==0.28.1
