@@ -3,6 +3,7 @@ import numpy as np
 
 IMG_SIZE = 128
 
+# Same preprocessing steps used for original model training and evaluation
 def preprocess_pil(image: Image.Image) -> np.ndarray:
     image = image.convert("RGB").resize((IMG_SIZE, IMG_SIZE))
     arr = np.asarray(image).astype("float32") / 255.0

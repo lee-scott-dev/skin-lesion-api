@@ -1,4 +1,3 @@
-# app/main.py
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from PIL import Image
 import io
@@ -10,10 +9,9 @@ from app.preprocess import preprocess_pil
 
 app = FastAPI(title="HAM10000 Skin Lesion Inference Service")
 
-# Cache loaded models so you don’t reload each request
-_loaded_models: dict[str, tf.keras.Model] = {}
+_loaded_models: dict[str, tf.keras.Model] = {} # Cache loaded models so don’t reload each request
 
-LABELS = ["Typical", "Atypical"]  # matches your Binary Class 0/1
+LABELS = ["Typical", "Atypical"]  # Matches binary classes from models
 
 @app.get("/")
 def root():

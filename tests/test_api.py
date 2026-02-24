@@ -15,7 +15,7 @@ def test_models_endpoint():
 def test_predict_endpoint():
     model_id = "best_model_og_LN"
 
-    # create a simple RGB image in memory
+    # Creating an image on the fly to test responses have correct structure
     img = Image.new("RGB", (128, 128), (120, 80, 200))
     buf = io.BytesIO()
     img.save(buf, format="JPEG")

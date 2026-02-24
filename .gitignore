@@ -22,9 +22,9 @@ venv/
 models/*.h5
 models/*.keras
 
-# Ignore large EN models and GAN artifacts
+# Ignoring large EN models and GAN artifacts
 models/*_EN.h5
 models/HAM10000_*.h5
 
-# Allow LeNet model binaries to be tracked
+# Allowing LeNet model binaries to be tracked
 !models/*_LN.h5
