@@ -25,3 +25,6 @@ models/*.keras
 # Ignore large EN models and GAN artifacts
 models/*_EN.h5
 models/HAM10000_*.h5
+
+# Allow LeNet model binaries to be tracked
+!models/*_LN.h5
