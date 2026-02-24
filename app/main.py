@@ -45,7 +45,7 @@ async def predict(model_id: str, file: UploadFile = File(...)):
     x = preprocess_pil(image)
     model = get_model(model_id)
 
-    probs = model.predict(x, verbose=0)[0]  # softmax -> length 2
+    probs = model.predict(x, verbose=0)[0]
     probs = probs.astype(float)
 
     top_idx = int(np.argmax(probs))
