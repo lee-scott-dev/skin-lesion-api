@@ -21,3 +21,7 @@ venv/
 # Large artifacts
 models/*.h5
 models/*.keras
+
+# Ignore large EN models and GAN artifacts
+models/*_EN.h5
+models/HAM10000_*.h5
