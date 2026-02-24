@@ -1,7 +1,7 @@
+```markdown
 # HAM10000 Skin Lesion Inference API
 
-REST API built with FastAPI for binary skin lesion classification (Typical vs Atypical) using LeNet-5 models trained on the HAM10000 dataset.
-
+REST API built with FastAPI for binary skin lesion classification (Typical vs Atypical) using LeNet-5 models trained on the HAM10000 dataset.  
 This project demonstrates model serving, API design, testing, Dockerisation, and CI.
 
 ---
@@ -20,8 +20,6 @@ This project demonstrates model serving, API design, testing, Dockerisation, and
 
 ## Models
 
-Currently served models:
-
 | Model ID | Description |
 |---|---|
 | `best_model_og_LN` | LeNet-5, no augmentation |
@@ -29,60 +27,51 @@ Currently served models:
 | `best_model_gs_aug_LN` | LeNet-5, grid-search augmentation |
 | `best_model_gan_aug_LN` | LeNet-5, GAN oversampling |
 
-EfficientNet models and GAN training artifacts are excluded from the repository due to size.
+> EfficientNet models and GAN training artifacts are excluded from the repository due to size.
 
 ---
 
 ## Installation (Local)
 
-\`\`\`bash
+```bash
 conda activate skin-lesion-api
 pip install -r requirements.txt
-\`\`\`
+```
 
 Run the API:
 
-\`\`\`bash
+```bash
 uvicorn app.main:app --reload
-\`\`\`
+```
 
-API will be available at \`http://127.0.0.1:8000/docs\`
+API available at `http://127.0.0.1:8000/docs`
 
 ### Running Tests
 
-\`\`\`bash
+```bash
 pytest -q
-\`\`\`
+```
 
 ---
 
 ## Docker
 
-Build the image:
-
-\`\`\`bash
+```bash
 docker build -t skin-lesion-api .
-\`\`\`
-
-Run the container:
-
-\`\`\`bash
 docker run -p 8000:8000 skin-lesion-api
-\`\`\`
+```
 
 ---
 
 ## API Endpoints
 
-### \`GET /\` — Health check
-
-\`\`\`json
+### `GET /` — Health check
+```json
 { "status": "ok", "message": "Service running" }
-\`\`\`
+```
 
-### \`GET /models\` — List available models
-
-\`\`\`json
+### `GET /models` — List available models
+```json
 {
   "available_models": [
     {
@@ -92,14 +81,12 @@ docker run -p 8000:8000 skin-lesion-api
     }
   ]
 }
-\`\`\`
+```
 
-### \`POST /predict?model_id=best_model_og_LN\` — Predict
+### `POST /predict?model_id=best_model_og_LN` — Predict
+Content-Type: `multipart/form-data` · Field: `file` — image
 
-Content-Type: \`multipart/form-data\`
-Field: \`file\` — image
-
-\`\`\`json
+```json
 {
   "model_id": "best_model_og_LN",
   "prediction": "Typical",
@@ -108,13 +95,13 @@ Field: \`file\` — image
     "Atypical": 0.18
   }
 }
-\`\`\`
+```
 
 ---
 
 ## Project Structure
 
-\`\`\`
+```
 app/
   main.py            # FastAPI app and inference endpoint
   model_registry.py  # Model metadata and paths
@@ -123,18 +110,11 @@ models/              # LeNet model weights (tracked)
 tests/               # Pytest test suite
 Dockerfile
 requirements.txt
-\`\`\`
+```
 
 ---
 
 ## CI
 
 GitHub Actions runs dependency installation and the full pytest suite on every push.
-
----
-
-## Notes
-
-- Models are loaded lazily and cached in memory
-- Preprocessing: RGB → 128×128 → normalised to [0,1]
-- Output: softmax probabilities for binary classification
+```
