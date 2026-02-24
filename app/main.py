@@ -3,6 +3,7 @@ from PIL import Image
 import io
 import tensorflow as tf
 import numpy as np
+import time
 
 from app.model_registry import MODEL_REGISTRY
 from app.preprocess import preprocess_pil
@@ -36,16 +37,24 @@ def get_model(model_id: str) -> tf.keras.Model:
 
 @app.post("/predict")
 async def predict(model_id: str, file: UploadFile = File(...)):
+    t0 = time.perf_counter()
+
     content = await file.read()
     try:
         image = Image.open(io.BytesIO(content))
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid image file")
 
+    t1 = time.perf_counter()
     x = preprocess_pil(image)
+    t2 = time.perf_counter()
+
     model = get_model(model_id)
+    t3 = time.perf_counter()
 
     probs = model.predict(x, verbose=0)[0]
+    t4 = time.perf_counter()
+
     probs = probs.astype(float)
 
     top_idx = int(np.argmax(probs))
@@ -55,5 +64,11 @@ async def predict(model_id: str, file: UploadFile = File(...)):
         "probabilities": {
             "Typical": float(probs[0]),
             "Atypical": float(probs[1]),
+        },
+        "latency_ms": {
+            "preprocess_ms": (t2 - t1) * 1000,
+            "model_fetch_ms": (t3 - t2) * 1000,
+            "predict_ms": (t4 - t3) * 1000,
+            "total_ms": (t4 - t0) * 1000,
         }
     }
